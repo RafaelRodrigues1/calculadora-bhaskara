@@ -381,45 +381,29 @@ public class CalcBhaskara extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void clickCalc(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clickCalc
-        int a = Integer.parseInt(slotA.getText());      //int a recebe a string de slotA convertida para inteiro.
-        int b = Integer.parseInt(slotB.getText());
-        int c = Integer.parseInt(slotC.getText());
-        int delta = (int)(Math.pow(b, 2)-(4*a*c));      //O método pow da classe Math retorna um valor double, por isso o uso do typecast (int).
-            lblDelta.setText(Integer.toString(delta));  //Conversão de inteiro para string do valor de delta.
-            
-        if (delta<0){         //Se delta for menor que 0     
-            lblX1.setText("NaN");   //icognitas não são reais.
-            lblX2.setText("NaN");
-            jPanel1.setVisible(true);       //Faz painel das Icógnitas aparecer.  setVisible - configura como visível.
-            JOptionPane.showMessageDialog(null, "X' e X'' NÃO SÃO REAIS!", "Delta < 0", 1);     //Faz aparecer popup.
-        }
-        else{
-            float x1, x2, numX1, numX2;
-            int denX1, denX2;
-            if (delta==0){    //Se delta for igual a 0
-                x1 = (float)(-(b)+(Math.sqrt(delta)))/(2*a); //Math.sqrt retorna um valor double, por isso o typecast (float).
-                x2 = x1;  //Icógnitas são iguais.
-                numX1 = (float) (-(b)+(Math.sqrt(delta))); //Cálculo do númerador da fórmula para melhor visualização na tela.
-                denX1 = 2*a;            //Cálculo do denominador.                  
-                numX2 = numX1;
-                denX2 = denX1;
-                }
-            else {   //Se delta for maior que 0
-                x1 = (float)(-(b)+(Math.sqrt(delta)))/(2*a);//Math.sqrt retorna um valor double, por isso o typecast (float).
-                x2 = (float)(-(b)-(Math.sqrt(delta)))/(2*a);
-                numX1 = (float) (-(b)+(Math.sqrt(delta)));//Cálculo do númerador da fórmula para melhor visualização na tela.
-                denX1 = 2*a;            //Cálculo do denominador. 
-                numX2 = (float) (-(b)-(Math.sqrt(delta)));
-                denX2 = 2*a;           
-                }
-            lblNumX1.setText(String.format("%.1f", numX1)); //Conversão de float para string formatado com 2 casa decimais do float.
-            lblDenX1.setText(Integer.toString(denX1));
-            lblNumX2.setText(String.format("%.1f", numX2));
-            lblDenX2.setText(Integer.toString(denX2));
+
+        double a = Integer.parseInt(slotA.getText());      //recebe a string de slotA convertida para Double.
+        double b = Integer.parseInt(slotB.getText());
+        double c = Integer.parseInt(slotC.getText());
+        Bhaskara bhask = new Bhaskara(a, b, c);       
+        Double num1 = bhask.calcularNum1();
+        Double num2 = bhask.calcularNum2();
+        Double den = bhask.calcularDen();
+        Double x1 = bhask.calcularX1();
+        Double x2 = bhask.calcularX2();
+        try{
+            lblDelta.setText(Double.toString(bhask.calcularDelta())); 
+            lblNumX1.setText(String.format("%.1f", num1)); 
+            lblDenX1.setText(Double.toString(den));
+            lblNumX2.setText(String.format("%.1f", num2));
+            lblDenX2.setText(Double.toString(den));
             lblX1.setText(String.format("%.2f", x1));
             lblX2.setText(String.format("%.2f", x2));
-            jPanel1.setVisible(true);   //Faz painel das Icógnitas aparecer.  setVisible - configura como visível.          
-            }               
+            jPanel1.setVisible(true);
+        }
+        catch(NullPointerException e){
+            JOptionPane.showMessageDialog(null, "Delta<0\nX' e X'' São irreais!");
+        }    
     }//GEN-LAST:event_clickCalc
 
     
